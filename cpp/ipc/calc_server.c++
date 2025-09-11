@@ -14,6 +14,9 @@ public:
             object_->registerMethod("Add")
                 .onInterface(busName)
                 .implementedAs([this](int a, int b){
+                    if(a < 0 || b < 0){
+                        throw sdbus::Error("org.example.Calendar.InputError.InvalidInput","Numbers should greater than or eual to 0");
+                    }
                     std::cout<<"Add a+b called"<<std::endl;
                     return a + b;
                 });

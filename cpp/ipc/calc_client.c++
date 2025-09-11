@@ -10,12 +10,17 @@ int main()
     auto proxy = sdbus::createProxy(*connection_,"org.example.Calculator","/org/example/Calculator");
 
     int result;
-    proxy->callMethod("Add")
+    try {
+        proxy->callMethod("Add")
         .onInterface("org.example.Calculator")
-        .withArguments(10,20)
+        .withArguments(-5,20)
         .storeResultsTo(result);
 
-    cout<<"Result: "<< result;
+    cout<<"Result: "<< result<<endl;
+    } catch (const sdbus::Error& e){
+        cerr<<e.getMessage() <<endl<<e.getName() <<endl << e.what()<<endl;
+    }
+    
 
     return 0;
 }
