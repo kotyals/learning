@@ -36,8 +36,11 @@ public:
 
 int main()
 {
-    CalculatorService service("org.example.Calculator","/org/example/Calculator");
-    service.run();
-
+    try{
+        CalculatorService service("org.example.Calculator","/org/example/Calculator");
+        service.run();
+    } catch (const sdbus::Error& error) {
+        std::cerr << "Exception: " << error.what() << std::endl;
+    }
     return 0;
 }
