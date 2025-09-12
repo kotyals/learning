@@ -1,5 +1,7 @@
 #include<iostream>
 #include<sdbus-c++/sdbus-c++.h>
+#include<thread>
+#include<chrono>
 
 class CalculatorService{
     std::unique_ptr<sdbus::IConnection> connection_;
@@ -12,12 +14,16 @@ public:
         {
             connection_->requestName(busName);
             object_->registerMethod("Add")
-                .onInterface(busName)
+                .onInterface("org.example.Calculator") // Use interface name here
                 .implementedAs([this](int a, int b){
-                    if(a < 0 || b < 0){
-                        throw sdbus::Error("org.example.Calendar.InputError.InvalidInput","Numbers should greater than or eual to 0");
-                    }
                     std::cout<<"Add a+b called"<<std::endl;
+                    if(a < 0 || b < 0){
+                        throw sdbus::Error("org.example.Calendar.InputError.InvalidInput","Numbers should be greater than or equal to 0");
+                    }
+                    auto resultReadySignal = object_->createSignal("org.example.Calculator", "ResultReady"); // Use interface name here
+
+                    resultReadySignal << a + b;
+                    object_->emitSignal(resultReadySignal);
                     return a + b;
                 });
         }
