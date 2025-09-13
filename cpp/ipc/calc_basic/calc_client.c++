@@ -27,18 +27,43 @@ int main()
             std::cout << "Result Ready signal caught, result: " << result << endl;
         });
         proxy -> finishRegistration();    */
-
         connection_ -> enterEventLoopAsync();
-
-        int result;
-        proxy->callMethod("Add")
-            .onInterface(interfaceName)
-            .withArguments(10, 20)
-            .storeResultsTo(result);
-
-        cout << "Result: " << result << endl;
-        std::this_thread::sleep_for(std::chrono::seconds(10)); // Wait for signal
-
+        while(true){
+            int choice;
+            cout<<"Please choose from below \n 1. Add two numbers\n 2. Substract two numbers\n 3. Divide two numbers\n 4.Exit \n";
+            cin >> choice;
+            int a, b, result;
+            cout<<"Enter two numbers \n";
+            cin >> a;
+            cin >> b;
+            switch(choice){
+                case 1 :{
+                    proxy -> callMethod("Add")
+                        .onInterface(busName)
+                        .withArguments(a,b)
+                        .storeResultsTo(result);
+                        break;
+                }
+                case 2: {
+                    proxy -> callMethod("Sub")
+                        .onInterface(busName)
+                        .withArguments(a,b)
+                        .storeResultsTo(result);
+                        break;
+                }
+                case 3: {
+                    proxy -> callMethod("Div")
+                        .onInterface(busName)
+                        .withArguments(a,b)
+                        .storeResultsTo(result);
+                        break;
+                }
+                default: {
+                    cout<<"Exiting";
+                }
+            }
+            cout<<"Result Received: " << result << endl;
+        }
         connection_ -> leaveEventLoop();
     }catch (const sdbus::Error& error) {
         cerr<< "Sdbus Exception: "<< error.what()<<endl;
