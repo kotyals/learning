@@ -1,23 +1,12 @@
 #include<iostream>
 #include"operations.hpp"
 
-
-// void deleteLastNode(Node** root) {
-//     if(*root == nullptr) {
-//         cout<<"No data in list";
-//         return;
-//     }
-//     Node* temp = *root;
-//     while( temp -> next != nullptr) {
-//         temp = temp -> next;
-//     }
-// }
 int main() {
     Node* root = nullptr;
     
     insertAtBeginning(&root,10);
     // printElements(root);
-        // deleteFirstNode(&root);
+    // deleteFirstNode(&root);
     // printElements(root);
 
     insertAtEndRec(&root,20);
@@ -30,16 +19,13 @@ int main() {
     // deleteFirstNode(&root);
     // deleteLastNode(&root);
 
-
     root = reverseIter(root); 
     // reverse(&root);
-    //         // deleteLatNodeRec(&root);
-            printElements(root);
-            // printRec(root);
-            // cout<<endl;
-            // printRecRev(root);
-
-
+    // deleteLatNodeRec(&root);
+    printElements(root);
+    // printRec(root);
+    // cout<<endl;
+    // printRecRev(root);
 
     return 0;
 }
