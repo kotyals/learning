@@ -21,6 +21,11 @@ CalculatorService::CalculatorService(std::string busName, std::string objPath):
             .implementedAs([this](int a,int b){
                 return this -> div(a,b);
             });
+            object_ -> registerMethod("Mul")
+            .onInterface(busName)
+            .implementedAs([this](int a,int b){
+                return this -> mul(a,b);
+            });
     }
 void CalculatorService::run(){
     object_->finishRegistration();
@@ -52,7 +57,14 @@ int CalculatorService::div(int num, int den){
     object_ -> emitSignal(signal);
     return result;
 }
-
+int CalculatorService::mul(int a, int b){
+    int result = a * b;
+    auto signal = object_ -> createSignal(busName,"ResultReady");
+    signal << result;
+    object_ -> emitSignal(signal);
+    std:this_thread::sleep_for(std::chrono::seconds(5)); //assume function takes some time process and then sends the result
+    return result;
+}
 int main()
 {
     try{
