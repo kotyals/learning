@@ -4,6 +4,15 @@
 #include<chrono>
 using namespace std;
 
+void onAsyncResultReceive(const sdbus::Error* e,int result)
+{
+   if(e){
+    std::cerr << "[Callback ErrorS] " << e -> getName() << " - " << e -> getMessage() << std::endl;
+   } else {
+    std::cout << "[Callback] Mul = " << result << std::endl;
+   }
+}
+
 int main()
 {
     try {
@@ -30,7 +39,7 @@ int main()
         connection_ -> enterEventLoopAsync();
         while(true){
             int choice;
-            cout<<"Please choose from below \n 1. Add two numbers\n 2. Substract two numbers\n 3. Divide two numbers\n 4.Exit \n";
+            cout<<"Please choose from below \n 1. Add two numbers\n 2. Substract two numbers\n 3. Divide two numbers\n 4.Multiply 5.Exit \n";
             cin >> choice;
             int a, b, result;
             cout<<"Enter two numbers \n";
@@ -42,6 +51,7 @@ int main()
                         .onInterface(busName)
                         .withArguments(a,b)
                         .storeResultsTo(result);
+                        cout<<"Result Received: " << result << endl;
                         break;
                 }
                 case 2: {
@@ -49,6 +59,7 @@ int main()
                         .onInterface(busName)
                         .withArguments(a,b)
                         .storeResultsTo(result);
+                        cout<<"Result Received: " << result << endl;
                         break;
                 }
                 case 3: {
@@ -56,13 +67,20 @@ int main()
                         .onInterface(busName)
                         .withArguments(a,b)
                         .storeResultsTo(result);
+                        cout<<"Result Received: " << result << endl;
+                        break;
+                }
+                case 4: {
+                    proxy -> callMethodAsync("Mul")
+                        .onInterface(busName)
+                        .withArguments(a,b)
+                        .uponReplyInvoke(onAsyncResultReceive);
                         break;
                 }
                 default: {
                     cout<<"Exiting";
                 }
             }
-            cout<<"Result Received: " << result << endl;
         }
         connection_ -> leaveEventLoop();
     }catch (const sdbus::Error& error) {
