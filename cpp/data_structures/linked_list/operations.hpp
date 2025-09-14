@@ -6,8 +6,6 @@ struct Node {
     Node* next;
 };
 
-
-
 void printElements(Node* root) {
     cout<<"Print Elemenmts"<<endl;
     if( root == nullptr) {
@@ -24,15 +22,12 @@ void printElements(Node* root) {
 
 void printRec(Node* root) {
     if(root == nullptr) return;
-
     cout<<root -> data << " ";
     printRec(root -> next);
 }
 
 void printRecRev(Node* root) {
     if(root == nullptr) return;
-
-    
     printRec(root -> next);
     cout<<root -> data << " ";
 }
@@ -136,17 +131,14 @@ Node* revUtil(Node * root) {
     root -> next -> next = root;
     root -> next = nullptr;
     return newHead;
-
 }
 void reverse(Node** root) {
     if(*root == nullptr || (*root) -> next == nullptr) {
         return;
 
     }
-
     Node* newHead = revUtil((*root) );
     *root = newHead;
-
 }
 
 Node* reverseIter(Node* root){
@@ -160,5 +152,4 @@ Node* reverseIter(Node* root){
         curr = next;
     }
     return prev;
-
 }
